@@ -4,6 +4,15 @@ import numpy as np
 import matplotlib.pyplot as plt
 st.title('My title')
 
+
+
+
+
+
+
+
+
+
 with st.form(key="my_form"):
     stock_name = st.selectbox(
     'Le symbole de stock',
