@@ -1,23 +1,6 @@
 import streamlit as st
 import pandas as pd
 
-import numpy as np
-
-st.set_page_config(page_icon=":game_die:", page_title="Aboulaala Maria")
-st.header(':one: Simulation du mouvement brownien standard')
-
-with st.expander("Introduction:"):
-    
-    st.markdown("""
-
-    Un processus stochastique est une collection de variables aleatoires indicées {$W_t$}, ou $t \in T$  
-    Un processus stochastique W : [0, +$\infty$[ x $\mathbb{R}$ $\longrightarrow$ $\mathbb{R}$ est mouvement brownien standard si: \n
-    - $W_0$ = 0
-    - Pour tout s$\leq$t , $W_t$ - $W_{t-1}$ suit la loi $\mathcal{N}$(0,t-s)
-    - Pour tout n$\geq$1 , et tous $t_0$ = 0 < $t_1$ < ...< $t_n$, les accroissement ($W_{{t_i}+1}$ - $W_{t_i}$ : 0 $\leq$ i $\leq$ n-1) sont **independantes**.
-    En d'autres termes, pour tout $t_0$, $W_t$ $\sim$ $\mathcal{N}$(0,t), les trajectoires de $W_t$ ,  $t_0$ sont presque surement continues.
-                """
-    )
 # Third party imports
 import numpy as np
 from scipy.stats import norm 
