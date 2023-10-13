@@ -7,27 +7,9 @@ from .base import OptionPricingModel
 
 
 class BlackScholesModel(OptionPricingModel):
-    """ 
-    Class implementing calculation for European option price using Black-Scholes Formula.
-
-    Call/Put option price is calculated with following assumptions:
-    - European option can be exercised only on maturity date.
-    - Underlying stock does not pay divident during option's lifetime.  
-    - The risk free rate and volatility are constant.
-    - Efficient Market Hypothesis - market movements cannot be predicted.
-    - Lognormal distribution of underlying returns.
-    """
 
     def __init__(self, underlying_spot_price, strike_price, days_to_maturity, risk_free_rate, sigma):
-        """
-        Initializes variables used in Black-Scholes formula .
 
-        underlying_spot_price: current stock or other underlying spot price
-        strike_price: strike price for option cotract
-        days_to_maturity: option contract maturity/exercise date
-        risk_free_rate: returns on risk-free assets (assumed to be constant until expiry date)
-        sigma: volatility of the underlying asset (standard deviation of asset's log returns)
-        """
         self.S = underlying_spot_price
         self.K = strike_price
         self.T = days_to_maturity / 365
