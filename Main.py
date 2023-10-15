@@ -6,7 +6,7 @@ import pandas as pd
 import streamlit as st
 import yfinance as yf
 
-from option_pricing import BlackScholesModel, MonteCarloPricing, BinomialTreeModel, Ticker, TrinomialTreeModel
+from option_pricing import BlackScholesModel, MonteCarloPricing, BinomialTreeModel, Ticker, TrinomialTreeModel 
 
 class OPTION_PRICING_MODEL(Enum):
     BLACK_SCHOLES = 'Black Scholes Model'
@@ -71,12 +71,8 @@ if pricing_method == OPTION_PRICING_MODEL.BLACK_SCHOLES.value:
 
         st.subheader(f' :straight_ruler: Greeks {ticker}')
 
-        
 
-
-
-
-
+   
 
 
 
@@ -146,9 +142,7 @@ elif pricing_method == OPTION_PRICING_MODEL.BINOMIAL.value:
         days_to_maturity = (exercise_date - datetime.now().date()).days
 
         st.latex(r'''
-    a + ar + a r^2 + a r^3 + \cdots + a r^{n-1} =
-    \sum_{k=0}^{n-1} ar^k =
-    a \left(\frac{1-r^{n}}{1-r}\right)
+    a +
     ''')
 
         # Calculating option price
