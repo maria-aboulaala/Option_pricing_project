@@ -35,11 +35,13 @@ class MonteCarloPricing(OptionPricingModel):
         self.T = days_to_maturity / 365
         self.r = risk_free_rate
         self.sigma = sigma 
+        
 
         # Parameters for simulation
         self.N = number_of_simulations
         self.num_of_steps = days_to_maturity
         self.dt = self.T / self.num_of_steps
+        
 
     def simulate_prices(self):
         """
@@ -93,3 +95,51 @@ class MonteCarloPricing(OptionPricingModel):
         plt.title(f'First {num_of_movements}/{self.N} Random Price Movements')
         plt.legend(loc='best')
         plt.show()
+
+
+
+    def _calculate_greeks(self):
+        # Calcul des grecques
+        if self.simulation_results_S is None:
+            return {
+                "Delta Call": -1,
+                "Delta Put": -1,
+                "Gamma": -1,
+                "Theta Call": -1,
+                "Theta Put": -1,
+                "Vega": -1,
+                "Rho Call": -1,
+                "Rho Put": -1
+            }
+
+        S_T = self.simulation_results_S[-1]  # Valeurs de l'actif sous-jacent à l'expiration
+        d1 = (np.log(S_T / self.K) + (self.r + 0.5 * self.sigma ** 2) * self.T) / (self.sigma * np.sqrt(self.T))
+        d2 = d1 - self.sigma * np.sqrt(self.T)
+
+        delta_call = np.mean(norm.cdf(d1))
+        delta_put = delta_call - 1.0
+
+        gamma = np.mean(norm.pdf(d1) / (S_T * self.sigma * np.sqrt(self.T)))
+
+        theta_call = -np.mean((S_T * norm.pdf(d1) * self.sigma) / (2 * np.sqrt(self.T)) - self.r * self.K * np.exp(-self.r * self.T) * norm.cdf(d2))
+        theta_put = -np.mean((S_T * norm.pdf(d1) * self.sigma) / (2 * np.sqrt(self.T)) + self.r * self.K * np.exp(-self.r * self.T) * norm.cdf(-d2))
+
+        vega = np.mean(S_T * norm.pdf(d1) * np.sqrt(self.T))
+
+        rho_call = np.mean(self.K * self.T * np.exp(-self.r * self.T) * norm.cdf(d2))
+        rho_put = np.mean(-self.K * self.T * np.exp(-self.r * self.T) * norm.cdf(-d2))
+
+        return {
+            "Delta Call": delta_call,
+            "Delta Put": delta_put,
+            "Gamma": gamma,
+            "Theta Call": theta_call,
+            "Theta Put": theta_put,
+            "Vega": vega,
+            "Rho Call": rho_call,
+            "Rho Put": rho_put
+        }
+
+
+
+

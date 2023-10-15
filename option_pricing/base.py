@@ -26,3 +26,9 @@ class OptionPricingModel(ABC):
     def _calculate_put_option_price(self):
         """Calculates option price for put option."""
         pass
+
+    @abstractclassmethod
+    def _calculate_greeks(self):
+        """Calculates the Greeks for the option (e.g., Delta, Gamma, Theta, Vega, Rho)."""
+        pass
+

@@ -2,12 +2,12 @@
 from enum import Enum
 from datetime import datetime, timedelta
 import pandas as pd
-
+import matplotlib as plt
 import streamlit as st
 import yfinance as yf
-
+from scipy.stats import norm 
 from option_pricing import BlackScholesModel, MonteCarloPricing, BinomialTreeModel, Ticker, TrinomialTreeModel 
-
+import numpy as np
 class OPTION_PRICING_MODEL(Enum):
     BLACK_SCHOLES = 'Black Scholes Model'
     MONTE_CARLO = 'Monte Carlo Simulation'
@@ -70,9 +70,18 @@ if pricing_method == OPTION_PRICING_MODEL.BLACK_SCHOLES.value:
         st.write(put_option_price)
 
         st.subheader(f' :straight_ruler: Greeks {ticker}')
+        BSGREEKS = BSM._calculate_greeks()
+        st.write(BSGREEKS)
+
+ 
 
 
-   
+
+
+
+
+
+
 
 
 
@@ -117,6 +126,12 @@ elif pricing_method == OPTION_PRICING_MODEL.MONTE_CARLO.value:
         # Displaying call/put option price
         st.subheader(f'Call option price: {call_option_price}')
         st.subheader(f'Put option price: {put_option_price}')
+        S = Ticker.get_last_price(data, 'Adj Close')
+
+        BSGREEKS = MC._calculate_greeks()
+        st.write(BSGREEKS)
+
+
 
 elif pricing_method == OPTION_PRICING_MODEL.BINOMIAL.value:
     # Parameters for Binomial-Tree model
@@ -141,10 +156,7 @@ elif pricing_method == OPTION_PRICING_MODEL.BINOMIAL.value:
         sigma = sigma / 100
         days_to_maturity = (exercise_date - datetime.now().date()).days
 
-        st.latex(r'''
-    a +
-    ''')
-
+    
         # Calculating option price
         BOPM = BinomialTreeModel(spot_price, strike_price, days_to_maturity, risk_free_rate, sigma, number_of_time_steps)
         call_option_price = BOPM.calculate_option_price('Call Option')
@@ -154,6 +166,11 @@ elif pricing_method == OPTION_PRICING_MODEL.BINOMIAL.value:
         st.subheader(f'Call option price: {call_option_price}')
         st.subheader(f'Put option price: {put_option_price}')
 
+        st.subheader(f' :straight_ruler: Greeks {ticker}')
+
+        BSGREEKS = BOPM._calculate_greeks()
+        st.write(BSGREEKS)
+
 elif pricing_method == OPTION_PRICING_MODEL.TRINOMIAL.value:
     # Parameters for Binomial-Tree model
     ticker = st.text_input('Ticker symbol', 'AAPL')
@@ -161,7 +178,7 @@ elif pricing_method == OPTION_PRICING_MODEL.TRINOMIAL.value:
     risk_free_rate = st.slider('Risk-free rate (%)', 0, 100, 10)
     sigma = st.slider('Sigma (%)', 0, 100, 20)
     exercise_date = st.date_input('Exercise date', min_value=datetime.today() + timedelta(days=1), value=datetime.today() + timedelta(days=365))
-    number_of_time_steps = st.slider('Number of time steps', 5000, 100000, 15000)
+    number_of_time_steps = st.slider('Number of time steps', 1 ,5000, 100000, 15000)
 
     if st.button(f'Calculate option price for {ticker}'):
          # Getting data for selected ticker
@@ -178,10 +195,15 @@ elif pricing_method == OPTION_PRICING_MODEL.TRINOMIAL.value:
         days_to_maturity = (exercise_date - datetime.now().date()).days
 
         # Calculating option price
-        BOPM = TrinomialTreeModel(spot_price, strike_price, days_to_maturity, risk_free_rate, sigma, number_of_time_steps)
-        call_option_price = BOPM.calculate_option_price('Call Option')
-        put_option_price = BOPM.calculate_option_price('Put Option')
+        TOPM = TrinomialTreeModel(spot_price, strike_price, days_to_maturity, risk_free_rate, sigma, number_of_time_steps)
+        call_option_price = TOPM.calculate_option_price('Call Option')
+        put_option_price = TOPM.calculate_option_price('Put Option')
 
         # Displaying call/put option price
         st.subheader(f'Call option price: {call_option_price}')
         st.subheader(f'Put option price: {put_option_price}')
+        
+        st.subheader(f' :straight_ruler: Greeks {ticker}')
+
+        BSGREEKS = TOPM._calculate_greeks()
+        st.write(BSGREEKS)

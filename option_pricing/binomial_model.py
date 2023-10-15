@@ -83,3 +83,44 @@ class BinomialTreeModel(OptionPricingModel):
             V[:-1] = np.exp(-self.r * dT) * (p * V[1:] + q * V[:-1]) 
 
         return V[0]
+
+
+    def _calculate_greeks(self):
+        # Calcul des grecques
+        d1 = (np.log(self.S / self.K) + (self.r + 0.5 * self.sigma ** 2) * self.T) / (self.sigma * np.sqrt(self.T))
+        d2 = d1 - self.sigma * np.sqrt(self.T)
+
+        # Delta (Δ) pour l'option d'achat
+        delta_call = norm.cdf(d1)
+
+        # Delta (Δ) pour l'option de vente
+        delta_put = delta_call - 1.0
+
+        # Gamma (Γ) commun aux options d'achat et de vente
+        gamma = norm.pdf(d1) / (self.S * self.sigma * np.sqrt(self.T))
+
+        # Theta (θ) pour l'option d'achat
+        theta_call = -(self.S * norm.pdf(d1) * self.sigma) / (2 * np.sqrt(self.T)) - self.r * self.K * np.exp(-self.r * self.T) * norm.cdf(d2)
+
+        # Theta (θ) pour l'option de vente
+        theta_put = -(self.S * norm.pdf(d1) * self.sigma) / (2 * np.sqrt(self.T)) + self.r * self.K * np.exp(-self.r * self.T) * norm.cdf(-d2)
+
+        # Vega (ν) commun aux options d'achat et de vente
+        vega = self.S * norm.pdf(d1) * np.sqrt(self.T)
+
+        # Rho (ρ) pour l'option d'achat
+        rho_call = self.K * self.T * np.exp(-self.r * self.T) * norm.cdf(d2)
+
+        # Rho (ρ) pour l'option de vente
+        rho_put = -self.K * self.T * np.exp(-self.r * self.T) * norm.cdf(-d2)
+
+        return {
+            "Delta Call": delta_call,
+            "Delta Put": delta_put,
+            "Gamma": gamma,
+            "Theta Call": theta_call,
+            "Theta Put": theta_put,
+            "Vega": vega,
+            "Rho Call": rho_call,
+            "Rho Put": rho_put
+        }
