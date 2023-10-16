@@ -92,23 +92,23 @@ class BlackScholesModel(OptionPricingModel):
 
  
     
-    # ticker = st.selectbox("Choisir un stock", ["AAPL", "GOOG"])
-    # strike_price = st.number_input('Strike price', 300)
+    # # ticker = st.selectbox("Choisir un stock", ["AAPL", "GOOG"])
+    # # strike_price = st.number_input('Strike price', 300)
    
    
 
-        # Calculate delta for a call option at different times
-        t = np.linspace(0, exercise_date, len(S))
-        d1 = (np.log(S / strike_price) + (risk_free_rate + 0.5 * sigma ** 2) * (exercise_date - t)) / (sigma * np.sqrt(exercise_date - t))
-        call_delta = norm.cdf(d1)
+    #     # Calculate delta for a call option at different times
+    #     t = np.linspace(0, exercise_date, len(S))
+    #     d1 = (np.log(S / strike_price) + (risk_free_rate + 0.5 * sigma ** 2) * (exercise_date - t)) / (sigma * np.sqrt(exercise_date - t))
+    #     call_delta = norm.cdf(d1)
 
-        # Plot the delta vs. time
-        plt.figure(figsize=(8, 6))
-        plt.plot(t, call_delta, label='Call Option Delta', color='blue')
-        plt.xlabel('Time to Expiration (Years)')
-        plt.ylabel('Delta (Δ)')
-        plt.title('Call Option Delta vs. Time to Expiration')
-        plt.legend()
-        plt.grid()
-        plt.show()
+    #     # Plot the delta vs. time
+    #     plt.figure(figsize=(8, 6))
+    #     plt.plot(t, call_delta, label='Call Option Delta', color='blue')
+    #     plt.xlabel('Time to Expiration (Years)')
+    #     plt.ylabel('Delta (Δ)')
+    #     plt.title('Call Option Delta vs. Time to Expiration')
+    #     plt.legend()
+    #     plt.grid()
+    #     plt.show()
 

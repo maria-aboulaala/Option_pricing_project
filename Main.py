@@ -30,11 +30,9 @@ start_date = datetime(2020, 1, 1)  # Date de début en 2020 (par exemple, 1er ja
 end_date = datetime.now()  # Date de fin (date actuelle)
 
 if pricing_method == OPTION_PRICING_MODEL.BLACK_SCHOLES.value:
-    st.subheader('Introduction:')
-   
-    
-    # Parameters for Black-Scholes model
-    ticker = st.selectbox("Choisir un stock", ["AAPL", "GOOG"])
+
+
+    ticker = st.selectbox("Choisir un stock", ["AAPL", "GOOG", "AMZN", "MSFT", "TSLA", "FB", "BRK.B", "JPM", "V", "WMT"])
     strike_price = st.number_input('Strike price', 300)
     risk_free_rate = st.slider('Risk-free rate (%)', 0, 100, 10)
     sigma = st.slider('Sigma (%)', 0, 100, 20)
