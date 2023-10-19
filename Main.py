@@ -145,8 +145,9 @@ elif pricing_method == OPTION_PRICING_MODEL.BINOMIAL.value:
         data = yf.download(ticker, start = start_date, end= end_date)
         data = pd.DataFrame(data)
         st.write(data.tail())
-        Ticker.plot_data(data, ticker, 'Adj Close')
-        st.pyplot()
+        # Ticker.plot_data(data, ticker, 'Adj Close')
+        st.line_chart(data['Adj Close'])
+        # st.pyplot()
 
         # Formating simulation parameters
         spot_price = Ticker.get_last_price(data, 'Adj Close') 

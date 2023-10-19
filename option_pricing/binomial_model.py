@@ -17,16 +17,7 @@ class BinomialTreeModel(OptionPricingModel):
     """
 
     def __init__(self, underlying_spot_price, strike_price, days_to_maturity, risk_free_rate, sigma, number_of_time_steps):
-        """
-        Initializes variables used in Black-Scholes formula .
 
-        underlying_spot_price: current stock or other underlying spot price
-        strike_price: strike price for option cotract
-        days_to_maturity: option contract maturity/exercise date
-        risk_free_rate: returns on risk-free assets (assumed to be constant until expiry date)
-        sigma: volatility of the underlying asset (standard deviation of asset's log returns)
-        number_of_time_steps: number of time periods between the valuation date and exercise date
-        """
         self.S = underlying_spot_price
         self.K = strike_price
         self.T = days_to_maturity / 365
